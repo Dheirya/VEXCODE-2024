@@ -1,6 +1,7 @@
 #include "main.h"
 
-Drive chassis ({11, 1}, {-12, -2}, 4, 4.125, 200, 1);
+Drive chassis ({3, 1}, {-12, -2}, 4, 4.125, 200, 1);
+pros::Motor catapult(10);
 
 void initialize() {
   ez::print_ez_template();
@@ -36,6 +37,11 @@ void autonomous() {
 void opcontrol() {
   chassis.set_drive_brake(MOTOR_BRAKE_COAST);
   while (true) {
+    if (master.get_digital(DIGITAL_R2)) {
+      catapult.move(-127);
+    } else {
+      catapult.brake();
+    }
     chassis.arcade_standard(ez::SPLIT);
     pros::delay(ez::util::DELAY_TIME);
   }
